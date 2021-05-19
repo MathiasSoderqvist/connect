@@ -201,6 +201,8 @@ export type PrecomposeParams = {
     }[],
     baseFee?: number,
     floorBaseFee?: boolean,
+    sequence?: number,
+    skipOutputsPermutation?: boolean,
     coin: string,
 };
 
@@ -227,6 +229,7 @@ export type PrecomposedTransaction =
           transaction: {
               inputs: TxInputType[],
               outputs: TxOutputType[],
+              outputsPermutation?: number[],
           },
       };
 
@@ -234,6 +237,8 @@ export type ComposeParams = {
     outputs: ComposeOutput[],
     coin: string,
     push?: boolean,
+    sequence?: number,
+    lockTime?: number,
     account?: typeof undefined,
     feeLevels?: typeof undefined,
 };

@@ -199,6 +199,8 @@ export interface PrecomposeParams {
     }>;
     baseFee?: number;
     floorBaseFee?: boolean;
+    sequence?: number;
+    skipOutputsPermutation?: boolean;
     coin: string;
 }
 

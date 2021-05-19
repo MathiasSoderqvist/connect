@@ -51,8 +51,11 @@ export default class TransactionComposer {
                   .concat(addresses.unused)
                   .concat(addresses.change)
                   .map(a => a.address);
-        this.utxos = options.utxo.map(u => {
+        this.utxos = options.utxo.flatMap(u => {
+            // exclude amounts lower than dust limit if they are not required
+            if (!u.required && new BigNumber(u.amount).lte(this.coinInfo.dustLimit)) return [];
             const addressPath = getHDPath(u.path);
+
             return {
                 index: u.vout,
                 transactionHash: u.txid,
@@ -63,6 +66,7 @@ export default class TransactionComposer {
                 vsize: 0, // doesn't matter
                 coinbase: typeof u.coinbase === 'boolean' ? u.coinbase : false, // decide it it can be spent immediately (false) or after 100 conf (true)
                 own: allAddresses.indexOf(u.address) >= 0, // decide if it can be spent immediately (own) or after 6 conf (not own)
+                required: u.required,
             };
         });
     }
